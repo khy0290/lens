@@ -199,7 +199,7 @@ if start_simulation:
 
     # Simulation parameters for the animation loop
     total_steps = 200 # Number of frames in the animation
-    time_duration = 20 # Conceptual time units for the animation
+    time_duration = 10 # Conceptual time units for the animation - MADE FASTER
     dt = time_duration / total_steps # Time step per frame
 
     # How far the lens moves perpendicular to the line of sight
@@ -358,7 +358,7 @@ if start_simulation:
         # Update the brightness plot in the placeholder
         brightness_placeholder.pyplot(fig_bright)
 
-        time.sleep(0.05) # Control animation speed (0.05 seconds per frame)
+        time.sleep(0.02) # Control animation speed (0.02 seconds per frame) - MADE FASTER
 
     # Close Matplotlib figures to free up memory after the simulation is complete
     plt.close(fig_sim)
