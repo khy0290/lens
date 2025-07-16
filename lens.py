@@ -26,10 +26,9 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* Main app background with a space image */
+    /* Main app background with a plain black color */
     .stApp {
-        background: url("https://images.unsplash.com/photo-1508219808933-21b8f1c4a0e0?q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1920&h=1080&fit=crop&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTB8fHVuaXZlcnNlfGVufDB8fDB8fHww") no-repeat center center fixed;
-        background-size: cover;
+        background-color: black; /* Changed to plain black */
         color: white; /* Default text color */
     }
     /* Sidebar background with some transparency */
@@ -132,9 +131,9 @@ D_LS = D_S - D_L # Conceptual distance from Star 2 to Star 1
 
 # Convert slider values to SI units for physical calculations
 M_lens_SI = mass_star2_solar * M_SUN
-R_lens_SI = radius_star2_solar * R_SUN
+R_lens_SI = radius_star2_solar * M_SUN # Using M_SUN for scaling radius for visual effect
 M_planet_SI = mass_planet_jupiter * M_JUPITER
-R_planet_SI = radius_planet_jupiter * R_JUPITER
+R_planet_SI = radius_planet_jupiter * M_JUPITER # Using M_JUPITER for scaling radius for visual effect
 
 # --- Gravitational Lensing Physics Functions ---
 
@@ -199,7 +198,7 @@ if start_simulation:
 
     # Simulation parameters for the animation loop
     total_steps = 200 # Number of frames in the animation
-    time_duration = 10 # Conceptual time units for the animation - MADE FASTER
+    time_duration = 5 # Conceptual time units for the animation - Made even faster
     dt = time_duration / total_steps # Time step per frame
 
     # How far the lens moves perpendicular to the line of sight
@@ -247,7 +246,7 @@ if start_simulation:
         # Calculate planet's position if it exists (simplified circular orbit)
         x_planet, y_planet = x_lens, y_lens # Default to same as star if no planet or no orbit
         if has_planet:
-            planet_orbit_radius = 0.005 * D_S # Conceptual orbit radius for visualization
+            planet_orbit_radius = 0.015 * D_S # Increased conceptual orbit radius for visualization
             # Angle of the planet in its orbit (5 full orbits during the simulation)
             planet_angle = (current_time / time_duration) * 2 * np.pi * 5
             x_planet = x_lens + planet_orbit_radius * np.cos(planet_angle)
@@ -308,18 +307,17 @@ if start_simulation:
         ax_sim.text(D_S, -0.08 * D_S, "Star 1", color='white', ha='center', fontsize=10)
 
         # Plot Star 2 (Lensing Body)
-        # Use a circle to represent the star's size, scaled for visibility
-        # The scaling factor (5e-10) is arbitrary to make the circle visible on the plot.
-        star2_circle = plt.Circle((x_lens, y_lens), radius=R_lens_SI * 5e-10, color='red', alpha=0.8)
+        # Increased scaling factor for visual size of Star 2
+        star2_circle = plt.Circle((x_lens, y_lens), radius=R_lens_SI * 2e-9, color='red', alpha=0.8)
         ax_sim.add_patch(star2_circle)
-        ax_sim.text(x_lens, y_lens + R_lens_SI * 5e-10 + 0.005 * D_S, "Star 2", color='white', ha='center', fontsize=10)
+        ax_sim.text(x_lens, y_lens + R_lens_SI * 2e-9 + 0.005 * D_S, "Star 2", color='white', ha='center', fontsize=10)
 
         # Plot Planet (if exists)
         if has_planet:
-            # Use a circle for the planet, scaled for visibility
-            planet_circle = plt.Circle((x_planet, y_planet), radius=R_planet_SI * 5e-10, color='cyan', alpha=0.8)
+            # Increased scaling factor for visual size of the Planet
+            planet_circle = plt.Circle((x_planet, y_planet), radius=R_planet_SI * 2e-9, color='cyan', alpha=0.8)
             ax_sim.add_patch(planet_circle)
-            ax_sim.text(x_planet, y_planet + R_planet_SI * 5e-10 + 0.005 * D_S, "Planet", color='white', ha='center', fontsize=10)
+            ax_sim.text(x_planet, y_planet + R_planet_SI * 2e-9 + 0.005 * D_S, "Planet", color='white', ha='center', fontsize=10)
 
         # --- Light Path Visualization ---
         # Show a bent light path if the lens is close enough to the line of sight
@@ -358,7 +356,7 @@ if start_simulation:
         # Update the brightness plot in the placeholder
         brightness_placeholder.pyplot(fig_bright)
 
-        time.sleep(0.02) # Control animation speed (0.02 seconds per frame) - MADE FASTER
+        time.sleep(0.02) # Control animation speed (0.02 seconds per frame)
 
     # Close Matplotlib figures to free up memory after the simulation is complete
     plt.close(fig_sim)
